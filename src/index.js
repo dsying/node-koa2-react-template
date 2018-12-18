@@ -1,9 +1,10 @@
-import './assets/common.sass'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter} from 'react-router-dom'
+import App from './App'
 
-function changeTitle(){
-    document.querySelector('#app').textContent = 'Parcel 打包包'
-}
+const rootElement = document.querySelector('#app')
 
-setTimeout(() => {
-    changeTitle()
-}, 2000);
+ReactDOM.render(<BrowserRouter>
+    <App />
+  </BrowserRouter>, rootElement)

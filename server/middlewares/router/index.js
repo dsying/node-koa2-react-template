@@ -1,8 +1,9 @@
-const { Route } = require('../lib/decorator')
+const { Route } = require('../../lib/decorator')
 const { resolve } = require('path')
 
 export const router = app => {
-  const apiPath = resolve(__dirname, '../controller')
+  const apiPath = resolve(__dirname, '../../controller')
+  console.log('路由中间件,开始加载路由',apiPath );
   const router = new Route(app, apiPath)
 
   router.init()

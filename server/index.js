@@ -2,10 +2,11 @@ const Koa = require('koa')
 const { resolve } = require('path')
 const R = require('ramda')
 const config = require('./config')
-const MIDDLEWARES = ['router']
+const MIDDLEWARES = ['router','parcel']
 
 
 const useMiddleWares = (app) => {
+  console.log('待加载的中间件',MIDDLEWARES);
   R.map(
     R.compose(
       R.forEachObjIndexed(
