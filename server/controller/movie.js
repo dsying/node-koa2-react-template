@@ -1,4 +1,4 @@
-const { controller, get, post, put, del } = require('../lib/decorator')
+const { controller, get, post, put, del } = require('../middlewares/router/decorator')
 const { getMovieById } = require('../service/movie')
 
 

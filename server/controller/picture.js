@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 const router = new Router()
 
-const { controller, get, post, put, del } = require('../lib/decorator')
+const { controller, get, post, put, del } = require('../middlewares/router/decorator')
 const { getPictures } = require('../service/picture')
 
 

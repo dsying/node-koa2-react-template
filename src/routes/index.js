@@ -10,7 +10,7 @@ export default [
   {
     name: '详情页',
     icon: 'detail',
-    path: '/detail/:id',
+    path: '/detail',
     component: AC(() => import('../views/movie'))
   }
 ]
