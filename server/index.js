@@ -2,7 +2,7 @@ const Koa = require('koa')
 const { resolve } = require('path')
 const R = require('ramda')
 const config = require('./config')
-const MIDDLEWARES = ['router','parcel']
+const MIDDLEWARES = ['common','router','parcel']
 
 
 const useMiddleWares = (app) => {

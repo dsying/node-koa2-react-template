@@ -20,8 +20,6 @@ export class Route{
     //加载 controller 内的所有路由，意在 将所有装饰器 收集到 routerMap中
     const routes = glob.sync(resolve(this.apiPath, '**/*.js'))
     routes.forEach((n,i,arr) => (require(n)))
-    // console.log(routes);
-    // console.log(routes.forEach(require))
 
     
     for(let [conf, controller] of routerMap){

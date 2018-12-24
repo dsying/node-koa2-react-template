@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { Route, Switch, Link, Router } from 'react-router-dom'
-import routes from '../routes'
+import routes from '../routes/admin'
 
 
 const { Header, Sider, Content } = Layout;
@@ -27,13 +27,13 @@ class BasicLayout extends Component {
                <Menu.Item key="3">工作台</Menu.Item>
             </SubMenu>
             <Menu.Item key="4">
-              <Link to="/">
+              <Link to="/admin/type">
                 <Icon type="pie-chart" />
                 <span>分类管理</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="5">
-               <Link to="/detail">
+               <Link to="/admin/detail">
                 <Icon type="pie-chart" />
                 <span>权限管理</span>
               </Link>

@@ -21,7 +21,6 @@ export default (loadComponent, placeHolder = '正在加载中') => {
       console.log('didMount')
       // const { default: Child } = await loadComponent()
       let p1 = loadComponent()
-      console.log(p1)
       p1.then((result) => {
         const { default: Child } = result
         if (this.unmount) return
