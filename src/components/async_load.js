@@ -2,16 +2,16 @@ import React, { Component } from 'react'
 
 export default (loadComponent, placeHolder = '正在加载中') => {
    class AsyncComponent extends Component{
-    unmount = false
-    constructor () {
-      super()
-      
+    constructor (props) {
+      super(props)
+      console.log(props);
+      this.unmount = false
       this.state = {
         Child: null
       }
     }
-
-    componentWillUnmount (){
+    
+    componentWillUnmount(){
       console.log('willUnmount')
       this.unmount = true
     }
@@ -34,6 +34,7 @@ export default (loadComponent, placeHolder = '正在加载中') => {
 
     render () {
       const { Child } = this.state
+      console.log(__dirname)
       console.log(Child)
       return (
           Child 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd'
 import request from '../../lib/request'
-import './login.scss'
 
 class AdminLogin extends Component{
     _toggleLoading(status=false){
@@ -22,7 +21,7 @@ class AdminLogin extends Component{
                     ...values
                 }
             }).then(res => {
-                this.props.history.replace('/admin/index')
+                this.props.history.replace('/admin')
             })
           }
         });

@@ -1,11 +1,15 @@
 import React, { Component, Fragment } from 'react';
 
-export default class Home extends Component{
+class Home extends Component{
+    constructor(props){
+        super(props)
+    }
     render(){
         return (
             <Fragment>
-                <div>首页</div>
+                <div>12</div>
             </Fragment>
         )
     }
 }
+export default  Home
