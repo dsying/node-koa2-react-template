@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Table, Divider, Button, Modal, Form, Input, message } from 'antd';
+import { Table, Divider, Button, Modal, Form, Input, message, Popconfirm, Icon } from 'antd';
 import request from '../../lib/request'
 
 
@@ -36,7 +36,9 @@ class Home extends Component{
               <span>
                 <a href="javascript:;" onClick={this.handleEdit.bind(this,text)}>编辑</a>
                 <Divider type="vertical" />
-                <a href="javascript:;" onClick={this.handleEdit}>删除</a>
+                <Popconfirm title="Are you sure？" icon={<Icon type="question-circle-o" style={{ color: 'red' }} />} okText="Yes" cancelText="No" onConfirm={this.handleDelete.bind(this,text)}>
+                    <a href="javascript:;">删除</a>
+                </Popconfirm>
               </span>
             ),
           }]
@@ -46,7 +48,7 @@ class Home extends Component{
     render(){
         return (
             <div>
-                <Button type="primary">新建</Button>
+                <Button type="primary" icon="plus" style={{marginBottom: '20px'}} onClick={this.handleAdd}>新建</Button>
                 <Table 
                     columns={this.columns} 
                     dataSource={this.state.data}
@@ -61,6 +63,7 @@ class Home extends Component{
                     onCancel={this.handleCancel}
                     onUpdate={ this.handleUpdate}
                     initialValue={this.state.initialValue}
+                    operation={this.state.operation}
                 />
             </div>
 
@@ -116,7 +119,18 @@ class Home extends Component{
         console.log('saveFormRef', formRef);
         this.formRef = formRef;
     }
-
+    // 新建
+    handleAdd = () => {
+        this.setState({ 
+            visible: true,
+            operation: 'create',
+            initialValue: {
+                id: '',
+                name: '',
+                path: ''
+            } 
+        });
+    }
     // 编辑 ==> 弹出对话框
     handleEdit = (text) => {
         console.log('编辑按钮触发，text:',text);
@@ -130,6 +144,19 @@ class Home extends Component{
             } 
         });
     }
+    // 删除
+    handleDelete = (text) => {
+        console.log('删除按钮触发，text:', text)
+        request({
+            method: 'DELETE',
+            url: `/softwareType/${text.key}`,
+        }).then(res => {
+            this.fetch()
+            message.success('删除成功!')
+        }).catch(err => {
+            message.error(err)
+        })
+    }
     // 取消按钮
     handleCancel = () => {
         const form = this.formRef.props.form;
@@ -142,7 +169,7 @@ class Home extends Component{
         console.log('点击确定触发',this);
         const form = this.formRef.props.form;
         const { operation, initialValue } = this.state
-        const { id, name, path } = initialValue
+        const isUpdate = operation === 'update'
         // 表单校验
         form.validateFields((err, values) => {
             if (err) {
@@ -151,27 +178,44 @@ class Home extends Component{
 
             console.log('Received values of form: ', values);
             
-            
-            if(operation === 'update'){
+            const { name, path } = values
+            if(isUpdate){
                 console.log('执行更新操作')
                 request({
                     method: 'PUT',
-                    url: `/softwareType/${id}`,
+                    url: `/softwareType/${initialValue.id}`,
                     data: {
                         name,
                         path
                     }
                 }).then(res => {
+                    form.resetFields();//重置输入控件的值为initialValue
+                    this.fetch()
+                    this.setState({ visible: false, operation: '', initialValue: {} });//隐藏弹出框
                     message.success('更新成功!')
                 }).catch(err => {
                     message.error(err)
                 })
-            }else if(operation === 'create'){
+            }else{
                 console.log('执行新增操作')
+                request({
+                    method: 'POST',
+                    url: `/softwareType/`,
+                    data: {
+                        name,
+                        path
+                    }
+                }).then(res => {
+                    form.resetFields();//重置输入控件的值为initialValue
+                    this.fetch()
+                    this.setState({ visible: false, operation: '', initialValue: {} });//隐藏弹出框
+                    message.success('新建成功!')
+                }).catch(err => {
+                    message.error(err)
+                })
             }
 
-            form.resetFields();//重置输入控件的值为initialValue
-            this.setState({ visible: false, operation: '', initialValue: {} });//隐藏弹出框
+            
         });
     }
 
@@ -185,13 +229,14 @@ const CollectionCreateForm = Form.create()(
       render() {
         console.log(this.props);
         const {
-          visible, onCancel, onUpdate, form, initialValue
+          visible, onCancel, onUpdate, form, initialValue, operation
         } = this.props;
         const { getFieldDecorator } = form;
+        const isUpdate = operation === 'update'
         return (
           <Modal
             visible={visible}
-            title="创建软件分类"
+            title={isUpdate ? '修改' : '新增'}
             okText="确定"
             onCancel={onCancel}
             onOk={onUpdate}
@@ -206,10 +251,14 @@ const CollectionCreateForm = Form.create()(
                 )}
               </Form.Item>
               <Form.Item label="分类路径">
-                {getFieldDecorator('path', {
-                    rules: [{ required: true, message: '请输入分类路径!' }],
+                {getFieldDecorator('path', isUpdate ? {
                     initialValue: initialValue.path
-                })(<Input />)}
+                    } : {
+                        rules: [
+                            { required: true, message: '请输入分类路径!' },
+                            { pattern: '(\/([0-9a-zA-Z]+))+', message: '请输入正确的路径!'}],
+                        initialValue: initialValue.path
+                    })(<Input disabled={ isUpdate ? true : false}/>)}
               </Form.Item>
               
             </Form>
