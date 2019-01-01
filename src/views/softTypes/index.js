@@ -3,7 +3,7 @@ import { Table, Divider, Button, Modal, Form, Input, message, Popconfirm, Icon }
 import request from '../../lib/request'
 
 
-class Home extends Component{
+class SoftTypes extends Component{
     constructor(props){
         super(props)
         this.state = {
@@ -268,4 +268,4 @@ const CollectionCreateForm = Form.create()(
     }
   );
   
-export default  Home
+export default  SoftTypes

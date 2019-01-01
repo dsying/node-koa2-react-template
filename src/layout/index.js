@@ -3,7 +3,7 @@ import { Layout, Menu, Icon } from 'antd';
 import { Route, Switch, Link, Redirect } from 'react-router-dom'
 // import routes from '../routes/admin';
 
-import Home from '../views/home'
+import SoftTypes from '../views/softTypes'
 import Detail from '../views/movie'
 
 
@@ -54,7 +54,7 @@ class BasicLayout extends Component {
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
                   <Switch>
                     <Route path={`${match.path}/detail`} component={Detail} />
-                    <Route path={`${match.path}/type`}  component={Home} />
+                    <Route path={`${match.path}/type`}  component={SoftTypes} />
                   </Switch>
             </div>
           </Content>
